@@ -20,3 +20,4 @@ from .viz import plot_simulator_state
 from .viz import plot_single_agent_brax_timestep
 from .viz import plot_traffic_light_signals_as_points
 from .viz import plot_trajectory
+from .utils import *

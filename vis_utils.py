@@ -289,6 +289,7 @@ def plot_driveway(
 def plot_traj_with_speed(
     trajs: np.ndarray,
     speeds: np.ndarray,
+    valids: np.ndarray,
     fig: plt.Figure = None,
     ax: plt.Axes = None,
     fixed_linewidth: float = None,
@@ -310,7 +311,8 @@ def plot_traj_with_speed(
     norm = plt.Normalize(v_min, v_max)
 
     # traj have feature [center_x, center_y, center_z, length, width, height, heading, velocity_x, velocity_y, valid]
-    for points, speed in zip(trajs, speeds):
+    for points, speed, valid in zip(trajs, speeds, valids):
+        points = points[valid]
         segments = np.stack([points[:-1], points[1:]], axis=1)  # (N-1, 2, 2)
         # print(points.shape)
         # override config

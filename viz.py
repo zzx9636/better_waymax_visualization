@@ -179,6 +179,7 @@ def plot_trajectory(
   plot_traj_with_speed(
     trajs = valid_xy,
     speeds = valid_speed,
+    valids = traj.valid[is_controlled, :time_idx],
     ax = ax,
     v_max = np.ceil(speed.max())
   )
