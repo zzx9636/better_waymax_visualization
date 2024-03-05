@@ -1,6 +1,5 @@
 # Better Visualization of WayMax
-
-Instead of 
+Add this as a submodule to your repo. Instead of 
 ```python
 from waymax import visualization
 ```
