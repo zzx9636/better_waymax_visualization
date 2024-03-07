@@ -9,72 +9,72 @@ road_line_config = {
     },
     'BrokenSingleWhite': {
         'color': 'xkcd:medium grey',
-        'linewidth': 0.5,
-        'linestyle': '-',
-        'alpha': 1
+        'linewidth': 2,
+        'linestyle': '--',
+        'alpha': 0.5
     },
     'SolidSingleWhite': {
         'color': 'xkcd:medium grey',
-        'linewidth': 0.5,
+        'linewidth': 2,
         'linestyle': '-',
-        'alpha': 1
+        'alpha': 0.5
     },
     'SolidDoubleWhite': {
         'color': 'xkcd:medium grey',
-        'linewidth': 1.5,
+        'linewidth': 3.5,
         'linestyle': '-',
-        'alpha': 1
+        'alpha': 0.5
     },
     'BrokenSingleYellow': {
         'color': 'xkcd:yellowish orange',
-        'linewidth': 0.5,
-        'linestyle': '-',
-        'alpha': 1
+        'linewidth': 2,
+        'linestyle': '--',
+        'alpha': 0.5
     },
     'BrokenDoubleYellow': {
         'color': 'xkcd:yellowish orange',
-        'linewidth': 1.5,
-        'linestyle': '-',
-        'alpha': 1
+        'linewidth': 3.5,
+        'linestyle': '--',
+        'alpha': 0.5
     },
     'SolidSingleYellow': {
         'color': 'xkcd:yellowish orange',
-        'linewidth': 0.5,
+        'linewidth': 2,
         'linestyle': '-',
-        'alpha': 1
+        'alpha': 0.5
     },
     'SolidDoubleYellow': {
         'color': 'xkcd:yellowish orange',
-        'linewidth': 1.5,
+        'linewidth': 2,
         'linestyle': '-',
-        'alpha': 1
+        'alpha': 0.5
     },
     'PassingDoubleYellow': {
         'color': 'xkcd:yellowish orange',
-        'linewidth': 1.5,
+        'linewidth': 3.5,
         'linestyle': '-.',
-        'alpha': 1
+        'alpha': 0.5
     }
 }
 
 road_edge_config = {
     'Unknown': {
         'color': 'xkcd:brown',
-        'linewidth': 1.5,
+        'linewidth': 2,
         'linestyle': 'dotted',
-        'alpha': 1
+        'alpha': 0.8
     },
     'Boundary': {
         'color': 'xkcd:charcoal',
-        'linewidth': 1.5,
+        'linewidth': 2,
         'linestyle': '-',
-        'alpha': 1
+        'alpha': 0.8
     },
     'Median': {
         'color': 'xkcd:sage',
-        'linewidth': 1.5,
+        'linewidth': 2,
         'linestyle': '-',
-        'alpha': 1
+        'alpha': 0.8
     }
 }
 
@@ -114,14 +114,14 @@ speed_bump_config = {
 crosswalk_config = {
     'facecolor': 'None',
     'edgecolor': 'xkcd:bluish grey',
-    'alpha': 0.4,
+    'alpha': 0.2,
 }
 
 stop_sign_config = {
     'facecolor': 'xkcd:red',
     'edgecolor': 'none',
     'linewidth': 1.5,
-    'radius': 2,
+    'radius': 1.5,
     'alpha': 1,
 }
 

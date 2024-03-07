@@ -57,6 +57,8 @@ def _plot_bounding_boxes(
     time_idx: int,
     is_controlled: np.ndarray,
     valid: np.ndarray,
+    is_ego: np.ndarray = None,
+    is_adv: np.ndarray = None,
 ) -> None:
   """Helper function to plot multiple bounding boxes across time."""
   # Plots bounding boxes (traj_5dof) with shape: (A, T)
@@ -105,8 +107,20 @@ def _plot_bounding_boxes(
       color=color.COLOR_DICT['context'],
   )
   
-  # History of controlled agents
-  
+  # Ego
+  if is_ego is not None:
+    utils.plot_numpy_bounding_boxes(
+        ax=ax,
+        bboxes=traj_5dof[is_ego, time_idx],
+        color=color.COLOR_DICT['ego'],
+    )
+  # Adv
+  if is_adv is not None:
+    utils.plot_numpy_bounding_boxes(
+        ax=ax,
+        bboxes=traj_5dof[is_adv, time_idx],
+        color=color.COLOR_DICT['adv'],
+    )  
   
 def _index_pytree(inputs: Any, idx: int) -> Any:
   """Helper function to get idx-th example in a batch."""
@@ -126,6 +140,10 @@ def plot_trajectory(
     is_controlled: np.ndarray,
     time_idx: Optional[int] = None,
     indices: Optional[np.ndarray] = None,
+    show_colorbar: bool = False,
+    past_traj_length: int = 0,
+    is_ego = None,
+    is_adv = None
 ) -> None:
   """Plots a Trajectory with different color for controlled and context.
 
@@ -167,21 +185,32 @@ def plot_trajectory(
           traj_5dof[i, time_idx, 1] + 2,
           f'{indices[i]}',
           zorder=10,
+          clip_on=True,
+          fontsize = 14,
       )
-  _plot_bounding_boxes(ax, traj_5dof, time_idx, is_controlled, traj.valid)  # pytype: disable=wrong-arg-types  # jax-ndarray
+  _plot_bounding_boxes(ax, traj_5dof, time_idx, is_controlled, traj.valid, is_ego, is_adv)  # pytype: disable=wrong-arg-types  # jax-ndarray
+
 
   # Plot history of controlled agents
-  vel_xy = np.asarray(traj.vel_xy) # (A, T, 2)
-  speed = np.linalg.norm(vel_xy, axis=-1) # (A, T)
-  valid_xy = traj_5dof[is_controlled, :time_idx, :2]
-  valid_speed = speed[is_controlled, :time_idx]
-  
-  plot_traj_with_speed(
-    trajs = valid_xy,
-    speeds = valid_speed,
-    valids = traj.valid[is_controlled, :time_idx],
-    ax = ax,
-    v_max = np.ceil(speed.max())
+  start_idx = max(0, time_idx - past_traj_length)
+  end_idx = time_idx
+  if start_idx < end_idx:
+    if is_ego is not None and is_adv is not None:
+      is_controlled = is_ego | is_adv
+    # Plot history of controlled agents
+    vel_xy = np.asarray(traj.vel_xy) # (A, T, 2)
+    speed = np.linalg.norm(vel_xy, axis=-1) # (A, T)
+    valid_xy = traj_5dof[is_controlled, start_idx:time_idx, :2]
+    valid_speed = speed[is_controlled, start_idx:time_idx]
+    # print(valid_speed.min(), valid_speed.max())
+    plot_traj_with_speed(
+      trajs = valid_xy,
+      speeds = valid_speed,
+      valids = traj.valid[is_controlled, start_idx:time_idx],
+      ax = ax,
+      v_min = 0, #np.floor(valid_speed.min()),
+      v_max = 20, #np.ceil(valid_speed.max()),
+      show_colorbar=show_colorbar
   )
   
 def plot_traffic_light_signals_as_points(

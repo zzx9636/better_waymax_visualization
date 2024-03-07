@@ -299,34 +299,37 @@ def plot_traj_with_speed(
     v_min: float = 0,
     v_max: float = 10,
 ):
+    # print(v_min, v_max)
     '''
     This function plot trajectory with speed as color gradient
     '''
     if ax is None:
         ax = plt.gca()
-    # if fig is None:
-    #     fig = plt.gcf()
+    if fig is None:
+        fig = plt.gcf()
 
     # plot color line
     norm = plt.Normalize(v_min, v_max)
-
+    A, T, _ = trajs.shape
     # traj have feature [center_x, center_y, center_z, length, width, height, heading, velocity_x, velocity_y, valid]
-    for points, speed, valid in zip(trajs, speeds, valids):
-        points = points[valid]
+    for a in range(A):
+        points = trajs[a]
+        speed = speeds[a]
+        valid = valids[a]
+        points = points[valid, :]
         segments = np.stack([points[:-1], points[1:]], axis=1)  # (N-1, 2, 2)
-        # print(points.shape)
         # override config
-        linewidth = 2 if fixed_linewidth is None else fixed_linewidth
+        linewidth = 3 if fixed_linewidth is None else fixed_linewidth
         linestyle = '-' if fixed_linestyle is None else fixed_linestyle
-        alpha = 0.5 if fixed_alpha is None else fixed_alpha
+        alpha = 0.8 if fixed_alpha is None else fixed_alpha
 
-        lc = LineCollection(segments, cmap='viridis', norm=norm, linestyle=linestyle, alpha=alpha, zorder=3)
+        lc = LineCollection(segments, cmap='inferno', norm=norm, linestyle=linestyle, alpha=alpha, zorder=3)
         # Set the values used for colormapping
         lc.set_array(speed)
         lc.set_linewidth(linewidth)
         line = ax.add_collection(lc)
-    # if show_colorbar:
-    #     fig.colorbar(line, ax=ax, label='speed (m/s)', location='right', shrink=0.3, pad=0.02)
+    if show_colorbar:
+        fig.colorbar(line, ax=ax, label='speed (m/s)', location='bottom', shrink=0.3, pad=0.02)
 
 
 def plot_traj_with_time(
