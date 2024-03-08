@@ -95,11 +95,7 @@ def _plot_bounding_boxes(
       color=color.COLOR_DICT['controlled'],
   )
   
-  utils.plot_numpy_bounding_boxes(
-      ax=ax,
-      bboxes=traj_5dof[:, time_idx][overlap_mask & valid[:, time_idx]],
-      color=color.COLOR_DICT['overlap'],
-  )
+  
   
   utils.plot_numpy_bounding_boxes(
       ax=ax,
@@ -120,7 +116,13 @@ def _plot_bounding_boxes(
         ax=ax,
         bboxes=traj_5dof[is_adv, time_idx],
         color=color.COLOR_DICT['adv'],
-    )  
+    )
+    
+  utils.plot_numpy_bounding_boxes(
+    ax=ax,
+    bboxes=traj_5dof[:, time_idx][overlap_mask & valid[:, time_idx]],
+    color=color.COLOR_DICT['overlap'],
+  )   
   
 def _index_pytree(inputs: Any, idx: int) -> Any:
   """Helper function to get idx-th example in a batch."""
