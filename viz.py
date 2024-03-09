@@ -24,8 +24,8 @@ from waymax import config as waymax_config
 from waymax import datatypes
 from waymax.env.wrappers import brax_wrapper
 from waymax.utils import geometry
-from waymax.visualization import color
-from waymax.visualization import utils
+from .color import *
+from .utils import *
 
 from .vis_utils import plot_road_line, plot_road_edge, plot_stop_sign, plot_crosswalk, plot_speed_bump, plot_traj_with_speed
 road_type_dict = {
@@ -89,39 +89,39 @@ def _plot_bounding_boxes(
   traj_5dof[time_indices != time_idx, 2:4] /= 10
   
   # Plot current bounding boxes
-  utils.plot_numpy_bounding_boxes(
+  plot_numpy_bounding_boxes(
       ax=ax,
       bboxes = traj_5dof[:, time_idx][valid_controlled[:, time_idx] & ~overlap_mask],
-      color=color.COLOR_DICT['controlled'],
+      color=COLOR_DICT['controlled'],
   )
   
   
   
-  utils.plot_numpy_bounding_boxes(
+  plot_numpy_bounding_boxes(
       ax=ax,
       bboxes=traj_5dof[(time_indices == time_idx) & valid_context],
-      color=color.COLOR_DICT['context'],
+      color=COLOR_DICT['context'],
   )
   
   # Ego
   if is_ego is not None:
-    utils.plot_numpy_bounding_boxes(
+    plot_numpy_bounding_boxes(
         ax=ax,
         bboxes=traj_5dof[is_ego, time_idx],
-        color=color.COLOR_DICT['ego'],
+        color=COLOR_DICT['ego'],
     )
   # Adv
   if is_adv is not None:
-    utils.plot_numpy_bounding_boxes(
+    plot_numpy_bounding_boxes(
         ax=ax,
         bboxes=traj_5dof[is_adv, time_idx],
-        color=color.COLOR_DICT['adv'],
+        color=COLOR_DICT['adv'],
     )
     
-  utils.plot_numpy_bounding_boxes(
+  plot_numpy_bounding_boxes(
     ax=ax,
     bboxes=traj_5dof[:, time_idx][overlap_mask & valid[:, time_idx]],
-    color=color.COLOR_DICT['overlap'],
+    color=COLOR_DICT['overlap'],
   )   
   
 def _index_pytree(inputs: Any, idx: int) -> Any:
@@ -242,7 +242,7 @@ def plot_traffic_light_signals_as_points(
   tls_state = tls.state[:, timestep][valid]
 
   for xy, state in zip(tls_xy, tls_state):
-    tl_color = color.TRAFFIC_LIGHT_COLORS[int(state)]
+    tl_color = TRAFFIC_LIGHT_COLORS[int(state)]
     ax.plot(xy[0], xy[1], marker='o', color=tl_color, ms=4)
 
 
@@ -276,7 +276,7 @@ def plot_simulator_state(
     viz_config: dict for optional config.
     batch_idx: optional batch index.
     highlight_obj: Represents the type of objects that will be highlighted with
-      `color.COLOR_DICT['controlled']` color.
+      `COLOR_DICT['controlled']` 
 
   Returns:
     np image.
@@ -291,9 +291,9 @@ def plot_simulator_state(
     raise ValueError('Expecting 0 batch dimension, got %s' % len(state.shape))
 
   viz_config = (
-      utils.VizConfig() if viz_config is None else utils.VizConfig(**viz_config)
+      VizConfig() if viz_config is None else VizConfig(**viz_config)
   )
-  fig, ax = utils.init_fig_ax(viz_config)
+  fig, ax = init_fig_ax(viz_config)
 
   # 1. Plots trajectory.
   traj = state.log_trajectory if use_log_traj else state.sim_trajectory
@@ -326,7 +326,7 @@ def plot_simulator_state(
       origin_y + viz_config.front_y,
   ))
 
-  return utils.img_from_fig(fig)
+  return img_from_fig(fig)
 
 
 def plot_observation(
@@ -346,7 +346,7 @@ def plot_observation(
     viz_config: Dict for optional config.
     batch_idx: Optional batch index.
     highlight_obj: Represents the type of objects that will be highlighted with
-      `color.COLOR_DICT['controlled']` color.
+      `COLOR_DICT['controlled']` 
 
   Returns:
     np image.
@@ -362,9 +362,9 @@ def plot_observation(
     raise ValueError(f'Expecting shape () for obs, got {obs.shape}')
 
   viz_config = (
-      utils.VizConfig() if viz_config is None else utils.VizConfig(**viz_config)
+      VizConfig() if viz_config is None else VizConfig(**viz_config)
   )
-  fig, ax = utils.init_fig_ax(viz_config)
+  fig, ax = init_fig_ax(viz_config)
 
   # 1. Plots trajectory.
   # Shape: (num_objects, num_timesteps).
@@ -401,7 +401,7 @@ def plot_observation(
       origin_y + viz_config.front_y,
   ))
 
-  return utils.img_from_fig(fig)
+  return img_from_fig(fig)
 
 
 def plot_single_agent_brax_timestep(
@@ -438,9 +438,9 @@ def plot_single_agent_brax_timestep(
     raise ValueError('Expecting 0 batch dimension, got %s' % len(state.shape))
 
   viz_config = (
-      utils.VizConfig() if viz_config is None else utils.VizConfig(**viz_config)
+      VizConfig() if viz_config is None else VizConfig(**viz_config)
   )
-  fig, ax = utils.init_fig_ax(viz_config)
+  fig, ax = init_fig_ax(viz_config)
 
   # 1. Plots trajectory.
   traj = state.log_trajectory if use_log_traj else state.sim_trajectory
@@ -488,7 +488,7 @@ def plot_single_agent_brax_timestep(
           fontsize=6,
       )
 
-  return utils.img_from_fig(fig)
+  return img_from_fig(fig)
 
 
 def plot_roadgraph_points(

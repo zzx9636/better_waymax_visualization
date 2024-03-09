@@ -58,7 +58,9 @@ ROAD_GRAPH_COLORS = {
 COLOR_DICT = immutabledict({
     # RGB color:
     'context': np.array([0.6, 0.6, 0.6]),  # Context agents, grey.
-    'controlled': np.array([0, 0.6, 0.8]),  # Modeled agents, dark blue.
+    'controlled': np.array([118, 181, 197])/255.0,  # Modeled agents, dark blue.
     'history': np.array([0.8, 0.8, 0.8]),  # Grey for history.
     'overlap': np.array([1.0, 0.0, 0.0]),  # Red for overlap
+    'adv': np.array([0.6, 0.0, 0.6]),  # Ego agent, purple.
+    'ego': np.array([0.0, 0.8, 0.0]),   # Ego agent, dark green.
 })
