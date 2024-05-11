@@ -108,7 +108,7 @@ lane_config = {
 speed_bump_config = {
     'facecolor': 'xkcd:sunflower yellow',
     'edgecolor': 'xkcd:black',
-    'alpha': 1,
+    'alpha': 0,
 }
 
 crosswalk_config = {
